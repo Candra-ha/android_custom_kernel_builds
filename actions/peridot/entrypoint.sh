@@ -88,12 +88,6 @@ patch -p1 < "$PATCH_FILE"
 #set_config_flag CONFIG_KSU_SUSFS_OPEN_REDIRECT "$config_file"
 #set_config_flag CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS "$config_file"
 
-set_config_flag CONFIG_SYSVIPC "$config_file"
-set_config_flag CONFIG_POSIX_MQUEUE "$config_file"
-set_config_flag CONFIG_IPC_NS "$config_file"
-set_config_flag CONFIG_PID_NS "$config_file"
-set_config_flag CONFIG_DEVTMPFS "$config_file"
-
 msg "Downloading toolchain"
 #mkdir toolchain && (cd toolchain; bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S)
 #wget -q --no-check-certificate "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/refs/heads/main/Clang-main-link.txt)" -O /tmp/aosp-clang.tar.gz
