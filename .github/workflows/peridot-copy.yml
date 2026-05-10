@@ -1,0 +1,63 @@
+name: Build LOS Kernel (Peridot) Copy
+on: 
+  workflow_dispatch:
+      inputs:
+        ref:
+          type: string
+          description: reference head
+          required: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update Ubuntu
+      shell: bash
+      run: |
+        sudo apt-get update && sudo apt-get upgrade -y
+
+    - name: Setup zram as swap
+      shell: bash
+      run: |
+        sudo swapoff -a
+        sudo rm -f /mnt/swapfile
+        sudo apt-get install -y "linux-modules-extra-$(uname -r)"
+        [ -f /dev/zram0 ] || sudo modprobe zram
+        echo "Waiting 5s for zram module to initialize"
+        sleep 5
+        sudo zramctl --find --algorithm lz4 --size 24576M
+        sudo mkswap /dev/zram0
+        sudo swapon -d --priority 100 /dev/zram0
+        sudo sysctl -w vm.swappiness=180
+        sudo sysctl -w vm.watermark_boost_factor=0
+        sudo sysctl -w vm.watermark_scale_factor=125
+        sudo sysctl -w vm.page-cluster=0
+        sudo sysctl -w vm.min_free_kbytes=131072
+        sleep 1
+        sudo swapon --show
+        sudo zramctl
+
+    - name: Checkout local repository
+      uses: actions/checkout@v4
+      with:
+        path: builder
+
+    - name: Checkout kernel source
+      uses: actions/checkout@v5
+      with:
+        repository: Candra-ha/android_kernel_xiaomi_sm8635
+        path: source
+        ref: lineage-23.2-personal
+
+    - name: Build Kernel in Docker (ArchLinux)
+      uses: ./builder/actions/peridot
+      
+    - name: Get datetime
+      id: datetime
+      shell: bash
+      run: echo "datetime=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
+      
+    - name: Generate Artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: peridot_personal_${{ steps.datetime.outputs.datetime }}
+        path: ${{ github.workspace }}/builder/actions/peridot/AnyKernel3/*
