@@ -68,8 +68,8 @@ config_file="$workdir/arch/arm64/configs/vendor/peridot_GKI.config"
 #cp -r susfs/kernel_patches/fs/* fs/
 
 msg "Applying DroidSpaces kernel patch"
-PATCH_URL="https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/main/Documentation/resources/kernel-patches/GKI/below-kernel-6.12/001.GKI-below-6.12-fix_sysvipc_kabi_3_4_5.patch"
-PATCH_FILE="/tmp/001.GKI-below-6.12-fix_sysvipc_kabi_3_4_5.patch"
+PATCH_URL="https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/main/Documentation/resources/kernel-patches/GKI/below-kernel-6.12/001.GKI-below-6.12-fix_sysvipc_kabi_1_2_3.patch"
+PATCH_FILE="/tmp/001.GKI-below-6.12-fix_sysvipc_kabi_1_2_3.patch"
 wget -q --no-check-certificate "$PATCH_URL" -O "$PATCH_FILE"
 patch -p1 < "$PATCH_FILE"
 
