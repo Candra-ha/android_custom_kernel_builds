@@ -46,7 +46,7 @@ jobs:
       with:
         repository: Candra-ha/android_kernel_xiaomi_sm8635
         path: source
-        ref: lineage-23.2-personal
+        ref: personal
 
     - name: Build Kernel in Docker (ArchLinux)
       uses: ./builder/actions/peridot
