@@ -4,7 +4,7 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=KSUN+SUSFS LOS Kernel
+kernel.string=Custom Kernel
 do.devicecheck=1
 do.modules=0
 do.systemless=0
@@ -32,7 +32,7 @@ ui_print " "
 
 kernel_version=$(strings Image | grep -E -m1 'Linux version.*#' | cut -d\\  -f3-)
 
-ui_print "Flashing KSUN+SUSFS LOS Kernel..."
+ui_print "Flashing Kernel..."
 
 # boot install
 if [ -L "/dev/block/bootdevice/by-name/init_boot_a" -o -L "/dev/block/by-name/init_boot_a" ]; then
@@ -49,6 +49,6 @@ ui_print "Kernel version: $kernel_version"
 
 ui_print " "
 
-ui_print "Flashed KSUN+SUSFS LOS Kernel successfully!"
+ui_print "Flashed Kernel successfully!"
 
 ## end boot install
