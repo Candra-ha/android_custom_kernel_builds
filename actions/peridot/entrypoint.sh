@@ -60,7 +60,7 @@ if [ -d "drivers/kernelsu" ]; then
 fi
 
 msg "Get latest KSU"
-curl -LSs "https://raw.githubusercontent.com/Candra-ha/KernelSU/refs/heads/main/kernel/setup.sh" | bash -s dev
+curl -LSs "https://raw.githubusercontent.com/Candra-ha/KernelSU/refs/heads/main/kernel/setup.sh" | bash -s main
 #curl -LSs "https://raw.githubusercontent.com/Lu5ck/KernelSU-Next/refs/heads/dev/kernel/setup.sh" | bash -s dev
 
 #msg "Get susfs files"
