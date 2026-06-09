@@ -51,6 +51,7 @@ pacman -S --noconfirm curl wget git make zip tar binutils gcc flex bison bc inet
 
 cd source
 workdir=$(pwd)
+mkdir out
 config_file="$workdir/arch/arm64/configs/vendor/peridot_GKI.config"
 
 #if [ -d "drivers/kernelsu" ]; then
@@ -92,6 +93,7 @@ extract_tarball /tmp/aosp-clang.tar.gz toolchain
 
 git config --global --add safe.directory /github/workspace/source
 
+mkdir -p out
 export KBUILD_BUILD_USER=anggara
 export KBUILD_BUILD_HOST=SuperCat07Project
 export ARCH=arm64
@@ -118,5 +120,7 @@ eattime 2>&1 | tee -a out/compile.log
 
 msg "Preparing AnyKernel3"
 cd $workdir
+mkdir -p "../builder/actions/peridot/AnyKernel3/logs"
+cp out/compile.log "../builder/actions/peridot/AnyKernel3/logs"
 ls out/arch/arm64/boot/
 cp out/arch/arm64/boot/Image "../builder/actions/peridot/AnyKernel3" || exit 1
