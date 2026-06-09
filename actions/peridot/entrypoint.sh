@@ -118,9 +118,6 @@ CROSS_COMPILE=aarch64-linux-gnu-
 
 eattime 2>&1 | tee -a out/compile.log
 
-mkdir -p "../builder/actions/peridot/AnyKernel3/logs"
-cp "out/compile.log" "../builder/actions/peridot/AnyKernel3/logs/compile.log"
-
 msg "Preparing AnyKernel3"
 cd $workdir
 ls out/arch/arm64/boot/
