@@ -53,14 +53,13 @@ cd source
 workdir=$(pwd)
 config_file="$workdir/arch/arm64/configs/vendor/peridot_GKI.config"
 
-if [ -d "drivers/kernelsu" ]; then
-    msg "Removing imported KSU"
-    rm -rf "drivers/kernelsu"
-    sed -i '/^source "drivers\/kernelsu\/Kconfig"$/d' drivers/Kconfig
-fi
+#if [ -d "drivers/kernelsu" ]; then
+#    msg "Removing imported KSU"
+#    rm -rf "drivers/kernelsu"
+#    sed -i '/^source "drivers\/kernelsu\/Kconfig"$/d' drivers/Kconfig
+#fi
 
-msg "Get latest KSU"
-curl -LSs "https://raw.githubusercontent.com/Candra-ha/KernelSU/refs/heads/main/kernel/setup.sh" | bash -s main
+#msg "Get latest KSU"
 #curl -LSs "https://raw.githubusercontent.com/Lu5ck/KernelSU-Next/refs/heads/dev/kernel/setup.sh" | bash -s dev
 
 #msg "Get susfs files"
@@ -85,22 +84,37 @@ curl -LSs "https://raw.githubusercontent.com/Candra-ha/KernelSU/refs/heads/main/
 msg "Downloading toolchain"
 #mkdir toolchain && (cd toolchain; bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S)
 #wget -q --no-check-certificate "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/refs/heads/main/Clang-main-link.txt)" -O /tmp/aosp-clang.tar.gz
-wget -q --no-check-certificate https://github.com/ZyCromerZ/Clang/releases/download/20.0.0git-20250129-release/Clang-20.0.0git-20250129.tar.gz -O /tmp/aosp-clang.tar.gz
+#wget -q --no-check-certificate https://github.com/ZyCromerZ/Clang/releases/download/20.0.0git-20250129-release/Clang-20.0.0git-20250129.tar.gz -O /tmp/aosp-clang.tar.gz
+wget -q --no-check-certificate https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/09062026/neutron-clang-09062026.tar.zst -O /tmp/aosp-clang.tar.gz
 #wget -q --no-check-certificate https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r574158.tar.gz -O /tmp/aosp-clang.tar.gz
 mkdir -p toolchain
 extract_tarball /tmp/aosp-clang.tar.gz toolchain
 
 git config --global --add safe.directory /github/workspace/source
 
-export PATH=$(pwd)/toolchain/bin/:$PATH
-export BUILD_CC="$(pwd)/toolchain/bin/clang"
+export KBUILD_BUILD_USER=anggara
+export KBUILD_BUILD_HOST=SuperCat07Project
 export ARCH=arm64
 export SUBARCH=arm64
 export DISABLE_WRAPPER=1
-KERNEL_DEFCONFIG="gki_defconfig vendor/pineapple_GKI.config vendor/peridot_GKI.config"
-KERNEL_CMDLINE="ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- O=out LLVM=1 LLVM_IAS=1"
-make $KERNEL_CMDLINE $KERNEL_DEFCONFIG 
-make $KERNEL_CMDLINE -j$(nproc --all)
+export PATH="$(pwd)/toolchain/bin/:$PATH"
+
+make O=out ARCH=arm64 gki_defconfig vendor/pineapple_GKI.config vendor/peridot_GKI.config
+
+eattime () {
+make -j$(nproc --all) O=out LLVM=1 LLVM_IAS=1 \
+ARCH=arm64 \
+CC=clang \
+AR=llvm-ar \
+NM=llvm-nm \
+OBJCOPY=llvm-objcopy \
+OBJDUMP=llvm-objdump \
+STRIP=llvm-strip \
+LD=ld.lld \
+CROSS_COMPILE=aarch64-linux-gnu-
+}
+
+eattime 2>&1 | tee -a out/compile.log
 
 msg "Preparing AnyKernel3"
 cd $workdir
