@@ -123,4 +123,4 @@ cd $workdir
 mkdir -p "../builder/actions/peridot/AnyKernel3/logs"
 cp out/compile.log "../builder/actions/peridot/AnyKernel3/logs"
 ls out/arch/arm64/boot/
-cp out/arch/arm64/boot/Image "../builder/actions/peridot/AnyKernel3" || exit 1
+cp out/arch/arm64/boot/Image "../builder/actions/peridot/AnyKernel3"
