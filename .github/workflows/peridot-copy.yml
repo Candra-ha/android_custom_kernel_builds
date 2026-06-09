@@ -55,15 +55,15 @@ jobs:
       id: datetime
       shell: bash
       run: echo "datetime=$(date +'%Y%m%d_%H%M%S')" >> $GITHUB_OUTPUT
-      
-    - name: Generate Artifact
+
+    - name: Generate Artifact logs
       uses: actions/upload-artifact@v6
       with:
         name: peridot_personal_${{ steps.datetime.outputs.datetime }}
-        path: ${{ github.workspace }}/builder/actions/peridot/AnyKernel3/*
+        path: ${{ github.workspace }}/builder/actions/peridot/AnyKernel3/logs/*
 
-    - name: Generate Artifact logs
+    - name: Generate Artifact
       uses: actions/upload-artifact@v7
       with:
         name: peridot_personal_${{ steps.datetime.outputs.datetime }}
-        path: ${{ github.workspace }}/builder/actions/peridot/AnyKernel3/logs/*
+        path: ${{ github.workspace }}/builder/actions/peridot/AnyKernel3/*
