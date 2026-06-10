@@ -93,7 +93,7 @@ extract_tarball /tmp/aosp-clang.tar.gz toolchain
 
 git config --global --add safe.directory /github/workspace/source
 
-mkdir -p out
+mkdir -p out/logs
 export KBUILD_BUILD_USER=Anggara
 export KBUILD_BUILD_HOST=Super_Cat07
 export ARCH=arm64
@@ -110,10 +110,10 @@ eattime () {
 make $KERNEL_CMDLINE -j$(nproc --all)
 }
 
-eattime 2>&1 | tee -a out/arch/arm64/boot/compile.log
+eattime 2>&1 | tee -a out/logs/compile.log
 
 msg "Preparing AnyKernel3"
 cd $workdir
 ls out/arch/arm64/boot/
-cp out/arch/arm64/boot/compile.log "../builder/actions/peridot/AnyKernel3"
+cp out/logs/compile.log "../builder/actions/peridot/AnyKernel3"
 cp out/arch/arm64/boot/Image "../builder/actions/peridot/AnyKernel3" || exit 1
