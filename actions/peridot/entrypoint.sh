@@ -85,8 +85,8 @@ config_file="$workdir/arch/arm64/configs/vendor/peridot_GKI.config"
 msg "Downloading toolchain"
 #mkdir toolchain && (cd toolchain; bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S)
 #wget -q --no-check-certificate "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/refs/heads/main/Clang-main-link.txt)" -O /tmp/aosp-clang.tar.gz
-wget -q --no-check-certificate https://github.com/ZyCromerZ/Clang/releases/download/20.0.0git-20250129-release/Clang-20.0.0git-20250129.tar.gz -O /tmp/aosp-clang.tar.gz
-#wget -q --no-check-certificate https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/09062026/neutron-clang-09062026.tar.zst -O /tmp/aosp-clang.tar.gz
+#wget -q --no-check-certificate https://github.com/ZyCromerZ/Clang/releases/download/20.0.0git-20250129-release/Clang-20.0.0git-20250129.tar.gz -O /tmp/aosp-clang.tar.gz
+wget -q --no-check-certificate https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/09062026/neutron-clang-09062026.tar.zst -O /tmp/aosp-clang.tar.gz
 #wget -q --no-check-certificate https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r574158.tar.gz -O /tmp/aosp-clang.tar.gz
 mkdir -p toolchain
 extract_tarball /tmp/aosp-clang.tar.gz toolchain
