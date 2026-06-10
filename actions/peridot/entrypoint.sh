@@ -103,10 +103,17 @@ export BUILD_CC="$(pwd)/toolchain/bin/clang"
 export PATH="$(pwd)/toolchain/bin/:$PATH"
 KERNEL_DEFCONFIG="gki_defconfig vendor/pineapple_GKI.config vendor/peridot_GKI.config"
 KERNEL_CMDLINE="ARCH=arm64 CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- O=out LLVM=1 LLVM_IAS=1"
+
 make $KERNEL_CMDLINE $KERNEL_DEFCONFIG 
+
+eattime () {
 make $KERNEL_CMDLINE -j$(nproc --all)
+}
+
+eattime 2>&1 | tee -a out/arch/arm64/boot/compile.log
 
 msg "Preparing AnyKernel3"
 cd $workdir
 ls out/arch/arm64/boot/
+cp out/arch/arm64/boot/compile.log "../builder/actions/peridot/AnyKernel3"
 cp out/arch/arm64/boot/Image "../builder/actions/peridot/AnyKernel3" || exit 1
