@@ -94,20 +94,33 @@ extract_tarball /tmp/aosp-clang.tar.gz toolchain
 git config --global --add safe.directory /github/workspace/source
 
 mkdir -p out/logs
-#export KBUILD_BUILD_USER=Anggara
-#export KBUILD_BUILD_HOST=Super_Cat07
+export KBUILD_BUILD_USER=Anggara
+export KBUILD_BUILD_HOST=Super_Cat07
 export ARCH=arm64
 export SUBARCH=arm64
 export DISABLE_WRAPPER=1
 export BUILD_CC="$(pwd)/toolchain/bin/clang"
 export PATH="$(pwd)/toolchain/bin/:$PATH"
-KERNEL_DEFCONFIG="gki_defconfig vendor/pineapple_GKI.config vendor/peridot_GKI.config"
-KERNEL_CMDLINE="ARCH=arm64 CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- O=out LLVM=1 LLVM_IAS=1"
 
-make $KERNEL_CMDLINE $KERNEL_DEFCONFIG 
+make O=out ARCH=arm64 gki_defconfig vendor/pineapple_GKI.config vendor/peridot_GKI.config
 
 eattime () {
-make $KERNEL_CMDLINE -j$(nproc --all)
+make -j$(nproc --all) O=out LLVM=1 LLVM_IAS=1 \
+ARCH=arm64 \
+CC=clang \
+LD=ld.lld \
+AR=llvm-ar \
+AS=llvm-as \
+NM=llvm-nm \
+STRIP=llvm-strip \
+OBJCOPY=llvm-objcopy \
+OBJDUMP=llvm-objdump \
+READELF=llvm-readelf \
+HOSTCC=clang \
+HOSTCXX=clang++ \
+HOSTAR=llvm-ar \
+HOSTLD=ld.lld \
+CROSS_COMPILE=aarch64-linux-gnu-
 }
 
 eattime 2>&1 | tee -a out/logs/compile.log
