@@ -94,8 +94,8 @@ extract_tarball /tmp/aosp-clang.tar.gz toolchain
 git config --global --add safe.directory /github/workspace/source
 
 mkdir -p out/logs
-export KBUILD_BUILD_USER=Anggara
-export KBUILD_BUILD_HOST=Super_Cat07
+#export KBUILD_BUILD_USER=Anggara
+#export KBUILD_BUILD_HOST=Super_Cat07
 export ARCH=arm64
 export SUBARCH=arm64
 export DISABLE_WRAPPER=1
