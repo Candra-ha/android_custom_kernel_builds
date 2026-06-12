@@ -54,19 +54,23 @@ workdir=$(pwd)
 mkdir out
 config_file="$workdir/arch/arm64/configs/vendor/peridot_GKI.config"
 
-#if [ -d "drivers/kernelsu" ]; then
-#    msg "Removing imported KSU"
-#    rm -rf "drivers/kernelsu"
-#    sed -i '/^source "drivers\/kernelsu\/Kconfig"$/d' drivers/Kconfig
-#fi
+if [ -d "drivers/kernelsu" ]; then
+    msg "Removing imported KSU"
+    rm -rf "drivers/kernelsu"
+    sed -i '/^source "drivers\/kernelsu\/Kconfig"$/d' drivers/Kconfig
+fi
 
-#msg "Get latest KSU"
-#curl -LSs "https://raw.githubusercontent.com/Lu5ck/KernelSU-Next/refs/heads/dev/kernel/setup.sh" | bash -s dev
+msg "Get latest KSU"
+curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s v1.0.9
 
-#msg "Get susfs files"
-#git clone --depth=1 --branch gki-android14-6.1-dev https://gitlab.com/simonpunk/susfs4ksu.git susfs
-#cp -r susfs/kernel_patches/include/linux/* include/linux/
-#cp -r susfs/kernel_patches/fs/* fs/
+msg "Get susfs files"
+git clone --depth=1 --branch gki-android14-6.1 https://gitlab.com/simonpunk/susfs4ksu.git susfs
+cp -r susfs/kernel_patches/include/linux/* include/linux/
+cp -r susfs/kernel_patches/fs/* fs/
+cp susfs/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch .
+cp susfs/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
+patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch
+patch -p1 < 10_enable_susfs_for_ksu.patch
 
 #set_config_flag CONFIG_KPROBES "$config_file"
 #set_config_flag CONFIG_HAVE_KPROBES "$config_file"
