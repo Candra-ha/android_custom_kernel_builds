@@ -54,23 +54,23 @@ workdir=$(pwd)
 mkdir out
 config_file="$workdir/arch/arm64/configs/vendor/peridot_GKI.config"
 
-if [ -d "drivers/kernelsu" ]; then
-    msg "Removing imported KSU"
-    rm -rf "drivers/kernelsu"
-    sed -i '/^source "drivers\/kernelsu\/Kconfig"$/d' drivers/Kconfig
-fi
+#if [ -d "drivers/kernelsu" ]; then
+#    msg "Removing imported KSU"
+#    rm -rf "drivers/kernelsu"
+#    sed -i '/^source "drivers\/kernelsu\/Kconfig"$/d' drivers/Kconfig
+#fi
 
-msg "Get latest KSU"
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s v1.0.9
+#msg "Get latest KSU"
+#curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s v1.0.9
 
-msg "Get susfs files"
-git clone --depth=1 --branch gki-android14-6.1 https://gitlab.com/simonpunk/susfs4ksu.git susfs
-cp -r susfs/kernel_patches/include/linux/* include/linux/
-cp -r susfs/kernel_patches/fs/* fs/
-cp susfs/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch .
-cp susfs/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
-patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch
-patch -p1 < 10_enable_susfs_for_ksu.patch
+#msg "Get susfs files"
+#git clone --depth=1 --branch gki-android14-6.1 https://gitlab.com/simonpunk/susfs4ksu.git susfs
+#cp -r susfs/kernel_patches/include/linux/* include/linux/
+#cp -r susfs/kernel_patches/fs/* fs/
+#cp susfs/kernel_patches/50_add_susfs_in_gki-android14-6.1.patch .
+#cp susfs/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch .
+#patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch
+#patch -p1 < 10_enable_susfs_for_ksu.patch
 
 #set_config_flag CONFIG_KPROBES "$config_file"
 #set_config_flag CONFIG_HAVE_KPROBES "$config_file"
@@ -90,7 +90,8 @@ msg "Downloading toolchain"
 #mkdir toolchain && (cd toolchain; bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S)
 #wget -q --no-check-certificate "$(curl -s https://raw.githubusercontent.com/ZyCromerZ/Clang/refs/heads/main/Clang-main-link.txt)" -O /tmp/aosp-clang.tar.gz
 #wget -q --no-check-certificate https://github.com/ZyCromerZ/Clang/releases/download/20.0.0git-20250129-release/Clang-20.0.0git-20250129.tar.gz -O /tmp/aosp-clang.tar.gz
-wget -q --no-check-certificate https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/09062026/neutron-clang-09062026.tar.zst -O /tmp/aosp-clang.tar.gz
+#wget -q --no-check-certificate https://github.com/Neutron-Toolchains/clang-build-catalogue/releases/download/09062026/neutron-clang-09062026.tar.zst -O /tmp/aosp-clang.tar.gz
+wget -q --no-check-certificate https://github.com/greenforce-project/greenforce_clang/releases/download/19062024/greenforce-clang-19.0.0git-19062024.tar.zst -O /tmp/aosp-clang.tar.gz
 #wget -q --no-check-certificate https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android16-qpr2-release/clang-r574158.tar.gz -O /tmp/aosp-clang.tar.gz
 mkdir -p toolchain
 extract_tarball /tmp/aosp-clang.tar.gz toolchain
