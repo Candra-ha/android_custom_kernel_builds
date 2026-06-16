@@ -50,7 +50,7 @@ jobs:
       with:
         repository: Candra-ha/android_kernel_xiaomi_sm8635
         path: source
-        ref: personal
+        ref: personal-ksu-susfs
 
     - name: Build Kernel in Docker (ArchLinux)
       uses: ./builder/actions/peridot
@@ -63,5 +63,5 @@ jobs:
     - name: Generate Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: peridot_personal_${{ steps.datetime.outputs.datetime }}
+        name: peridot_personal_KSU_SUSFS_${{ steps.datetime.outputs.datetime }}
         path: ${{ github.workspace }}/builder/actions/peridot/AnyKernel3/*
